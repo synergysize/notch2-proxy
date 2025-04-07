@@ -25,7 +25,7 @@ app.post('/chat', async (req, res) => {
     console.log('Received request to /chat endpoint');
 
     // Extract parameters from the request
-    const { messages, system, temperature = 0.7, model = 'claude-3-opus-20240229' } = req.body;
+    const { messages, system, temperature = 0.7, model = 'claude-2.1' } = req.body;
 
     // Validate required parameters
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
