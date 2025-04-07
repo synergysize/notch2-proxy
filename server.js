@@ -13,7 +13,7 @@ app.use(express.json({ limit: '10mb' }));
 
 // The Claude API endpoint
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
-const API_KEY = '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';
+const API_KEY = process.env.CLAUDE_API_KEY;
 
 // Proxy endpoint for Claude API
 app.post('/chat', async (req, res) => {
