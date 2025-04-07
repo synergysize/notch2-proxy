@@ -15,14 +15,18 @@ app.use(express.json({ limit: '10mb' }));
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const API_KEY = process.env.CLAUDE_API_KEY;
 
+if (!API_KEY) {
+  console.error('❌ CLAUDE_API_KEY is undefined! Check your Render env vars.');
+}
+
 // Proxy endpoint for Claude API
 app.post('/chat', async (req, res) => {
   try {
     console.log('Received request to /chat endpoint');
-    
+
     // Extract parameters from the request
     const { messages, system, temperature = 0.7, model = 'claude-3-opus-20240229' } = req.body;
-    
+
     // Validate required parameters
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return res.status(400).json({
@@ -30,25 +34,25 @@ app.post('/chat', async (req, res) => {
         message: 'Invalid or missing messages array in request'
       });
     }
-    
+
     if (!system || typeof system !== 'string') {
       return res.status(400).json({
         error: true,
         message: 'Missing or invalid system prompt in request'
       });
     }
-    
+
     // Prepare the request for Claude API
     const claudeRequest = {
-      model: 'claude-3-opus-20240229', // Always use this model as specified
+      model,
       max_tokens: 1000,
-      temperature: 0.7, // Always use 0.7 as specified
+      temperature,
       messages,
       system
     };
-    
+
     console.log('Sending to Claude API with model:', claudeRequest.model);
-    
+
     // Make request to Claude API
     const response = await axios.post(CLAUDE_API_URL, claudeRequest, {
       headers: {
@@ -57,14 +61,14 @@ app.post('/chat', async (req, res) => {
         'anthropic-version': '2023-06-01'
       }
     });
-    
+
     console.log('Received response from Claude API successfully');
-    
+
     // Send the response back to the client
     res.json(response.data);
   } catch (error) {
     console.error('Error proxying request to Claude API:', error.message);
-    
+
     // If axios error has response, send the error details
     if (error.response) {
       console.error('Claude API response error:', error.response.status, error.response.data);
