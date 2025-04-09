@@ -15,6 +15,8 @@ app.use(express.json({ limit: '10mb' }));
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const API_KEY = process.env.CLAUDE_API_KEY;
 
+console.log("API KEY:", API_KEY);
+
 if (!API_KEY) {
   console.error('❌ CLAUDE_API_KEY is undefined! Check your Render env vars.');
 }
