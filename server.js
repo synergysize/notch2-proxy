@@ -58,7 +58,7 @@ app.post('/chat', async (req, res) => {
     // Make request to Claude API
     const response = await axios.post(CLAUDE_API_URL, claudeRequest, {
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
+        'x-api-key': API_KEY,,
         'Content-Type': 'application/json',
         'anthropic-version': '2023-06-01'
       }
