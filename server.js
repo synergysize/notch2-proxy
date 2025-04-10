@@ -49,7 +49,7 @@ app.post('/chat', async (req, res) => {
     // Prepare the request for Claude API
     const claudeRequest = {
       model,
-      max_tokens: 100,
+      max_tokens: 50,
       temperature,
       messages,
       system
